@@ -1,9 +1,11 @@
 import React from 'react'
 
-const User = () => {
+const User = ({ user }) => {
 	return (
 		<div>
-			<h1>Name : </h1>
+			<h1>Name : {user?.name} </h1>
+			<p>{user.email}</p>
+			<p>Phone : {user.phone}</p>
 		</div>
 	)
 }
@@ -18,10 +20,23 @@ export async function getStaticPaths() {
 
 	// Get the paths we want to pre-render based on posts
 	const paths = users.map(user => ({
-		params: { id: user.id },
+		params: { id: user.id.toString() },
 	}))
 
 	// We'll pre-render only these paths at build time.
 	// { fallback: false } means other routes should 404.
 	return { paths, fallback: false }
+}
+
+// This also gets called at build time
+export async function getStaticProps({ params }) {
+	// params contains the post `id`.
+	// If the route is like /posts/1, then params.id is 1
+	const res = await fetch(
+		`https://jsonplaceholder.typicode.com/users/${params.id}`
+	)
+	const user = await res.json()
+
+	// Pass post data to the page via props
+	return { props: { user } }
 }
