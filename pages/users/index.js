@@ -7,10 +7,13 @@ const index = ({ users }) => {
 			<h1>This is users main page: {users.length} </h1>
 			{users.map(user => (
 				<div key={user.id}>
-					<h4> Name : {user.name}</h4>
-					<Link href={`{/users/${user.id}}`}>
-						<button>Explore</button>
-					</Link>
+					<h4>
+						{' '}
+						Name : {user.name}
+						<Link href={`/users/${user.id}`}>
+							<button>Explore</button>
+						</Link>
+					</h4>
 				</div>
 			))}
 		</div>
